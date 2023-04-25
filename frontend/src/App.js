@@ -4,6 +4,9 @@ import GoalInput from './components/goals/GoalInput';
 import CourseGoals from './components/goals/CourseGoals';
 import ErrorAlert from './components/UI/ErrorAlert';
 
+const containerDomain = "goals-backend"
+const localhostDomain = "localhost"
+
 function App() {
   const [loadedGoals, setLoadedGoals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +17,8 @@ function App() {
       setIsLoading(true);
 
       try {
-        const response = await fetch('http://localhost/goals');
+        // Browser doesn't know container name even if docker can map it by network.
+        const response = await fetch(`http://${localhostDomain}/goals`);
 
         const resData = await response.json();
 
@@ -39,7 +43,7 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost/goals', {
+      const response = await fetch(`http://${localhostDomain}/goals`, {
         method: 'POST',
         body: JSON.stringify({
           text: goalText,
@@ -78,7 +82,7 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost/goals/' + goalId, {
+      const response = await fetch(`http://${localhostDomain}/goals` + goalId, {
         method: 'DELETE',
       });
 
