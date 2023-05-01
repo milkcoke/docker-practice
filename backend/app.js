@@ -85,7 +85,7 @@ app.delete('/goals/:id', async (req, res) => {
 (async ()=>{
   try {
     await mongoose.connect(
-        'mongodb://max:secret@goals-mongodb:27017/course-goals?authSource=admin',
+        `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/course-goals?authSource=admin`,
         {
           useNewUrlParser: true,
           useUnifiedTopology: true,
@@ -97,3 +97,7 @@ app.delete('/goals/:id', async (req, res) => {
     console.error(e)
   }
 })()
+
+app.listen(Number(process.env.PORT),'0.0.0.0',()=>{
+  console.log('connected!')
+})

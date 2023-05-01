@@ -6,6 +6,10 @@ COPY package.json ./
 
 RUN npm install
 
-EXPOSE 80
+# If expose as env_file
+# This would be overwrited.
+ENV PORT 80
+
+EXPOSE $PORT
 
 CMD ["node", "app.js"]

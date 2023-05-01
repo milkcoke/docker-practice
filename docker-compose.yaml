@@ -1,0 +1,58 @@
+# https://docs.docker.com/compose/compose-file/compose-file-v3/
+version: "3.8"
+
+services:
+  # default: -d (detached mode)
+  mongodb:
+    image: mongo
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: max
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    # Use env_file when to not want to expose environment value
+    env_file:
+      # input relative path
+      - mongoDB/mongo.env
+    # Don't need input networks
+    # since docker compose creates networks automatically which has DNS resolution.
+    #networks:
+
+  backend:
+    # If image doesn't already exist, Use Dockerfile with `build` option path
+    build: backend # Look for a Dockerfile in the path.
+#    image: nodejs-app:1
+    ports:
+      - '8080:80'
+    volumes:
+      - logs:/app/logs
+      # bind mount (path:path)
+      - ./backend:/app
+      - /app/node_modules
+    # If use this, other environments are ignored.
+    # env_file takes a precedence other environments.
+    env_file:
+      # input relative path
+      - backend/.env
+    depends_on:
+      # backend is loaded after mongoDB
+      # Input service name
+      - mongodb
+
+
+  frontend:
+    # only rebuild if image is modified or not exists
+    build: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+
+# We should input top level volume when to use named volume
+volumes:
+  mongo-data:
+  logs:
