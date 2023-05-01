@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -83,20 +82,18 @@ app.delete('/goals/:id', async (req, res) => {
   }
 });
 
-mongoose.connect(
-    //mongodb://id:password@hostname:port
-  'mongodb://max:secret@goals-mongodb:27017/course-goals?authSource=admin',
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
-  (err) => {
-    if (err) {
-      console.error('FAILED TO CONNECT TO MONGODB');
-      console.error(err);
-    } else {
-      console.log('CONNECTED TO MONGODB');
-      app.listen(80);
-    }
+(async ()=>{
+  try {
+    await mongoose.connect(
+        'mongodb://max:secret@goals-mongodb:27017/course-goals?authSource=admin',
+        {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        },
+    );
+
+    console.log('Success to connect mongoDB')
+  } catch (e) {
+    console.error(e)
   }
-);
+})()
