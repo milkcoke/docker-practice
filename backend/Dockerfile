@@ -1,4 +1,4 @@
-FROM node
+FROM node:alpine
 
 WORKDIR /app
 
@@ -7,7 +7,8 @@ WORKDIR /app
 ENV PORT 80
 EXPOSE $PORT
 
-COPY . .
+COPY package.json ./
 RUN npm install
+COPY . .
 
 CMD ["node", "app.js"]

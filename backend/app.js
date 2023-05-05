@@ -23,6 +23,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/ping', async (req, res)=>{
+  return res
+      .status(200)
+      .json({
+          pong: "pong"
+      });
+})
+
 app.get('/goals', async (req, res) => {
   console.log('TRYING TO FETCH GOALS');
   try {
