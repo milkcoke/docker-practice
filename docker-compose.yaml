@@ -1,6 +1,7 @@
-# https://docs.docker.com/compose/compose-file/compose-file-v3/
 version: "3.8"
 
+# docker-compose -up -d --build --force-recreate
+# docker-compose -up -d --build --force-recreate <service-name>
 services:
   # default: -d (detached mode)
   mongodb:
@@ -10,6 +11,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: max
       MONGO_INITDB_ROOT_PASSWORD: secret
+    ports:
+      - "27017:27017"
     # Use env_file when to not want to expose environment value
     env_file:
       # input relative path
@@ -33,7 +36,7 @@ services:
     # env_file takes a precedence other environments.
     env_file:
       # input relative path
-      - backend/.env
+      - backend/.env.dev
     depends_on:
       # backend is loaded after mongoDB
       # Input service name
@@ -41,12 +44,13 @@ services:
 
 
   frontend:
-    # only rebuild if image is modified or not exists
     build: frontend
     ports:
       - "3000:3000"
     volumes:
       - ./frontend/src:/app/src
+    env_file:
+      - frontend/.env.dev
     stdin_open: true
     tty: true
     depends_on:

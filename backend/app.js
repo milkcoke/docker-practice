@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
 const Goal = require('./models/goal');
@@ -15,8 +14,7 @@ const accessLogStream = fs.createWriteStream(
 );
 
 app.use(morgan('combined', { stream: accessLogStream }));
-
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -85,7 +83,7 @@ app.delete('/goals/:id', async (req, res) => {
 (async ()=>{
   try {
     await mongoose.connect(
-        `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/course-goals?authSource=admin`,
+        `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@${process.env.MONGO_URL}:27017/course-goals?authSource=admin`,
         {
           useNewUrlParser: true,
           useUnifiedTopology: true,
