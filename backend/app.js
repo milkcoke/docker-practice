@@ -91,7 +91,7 @@ app.delete('/goals/:id', async (req, res) => {
 (async ()=>{
   try {
     await mongoose.connect(
-        `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@${process.env.MONGO_URL}:27017/course-goals?authSource=admin`,
+        `mongodb+srv://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@${process.env.MONGO_URL}/${process.env.MONGO_DATABASE_NAME}?retryWrites=true&w=majority`,
         {
           useNewUrlParser: true,
           useUnifiedTopology: true,

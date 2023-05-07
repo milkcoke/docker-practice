@@ -4,19 +4,19 @@ version: "3.8"
 # docker-compose -up -d --build --force-recreate <service-name>
 services:
   # default: -d (detached mode)
-  mongodb:
-    image: mongo
-    volumes:
-      - mongo-data:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: max
-      MONGO_INITDB_ROOT_PASSWORD: secret
-    ports:
-      - "27017:27017"
+#  mongodb:
+#    image: mongo
+#    volumes:
+#      - mongo-data:/data/db
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: max
+#      MONGO_INITDB_ROOT_PASSWORD: secret
+#    ports:
+#      - "27017:27017"
     # Use env_file when to not want to expose environment value
-    env_file:
+#    env_file:
       # input relative path
-      - mongoDB/mongo.env
+#      - mongoDB/mongo.env
     # Don't need input networks
     # since docker compose creates networks automatically which has DNS resolution.
     #networks:
@@ -37,10 +37,10 @@ services:
     env_file:
       # input relative path
       - backend/.env.dev
-    depends_on:
+#    depends_on:
       # backend is loaded after mongoDB
       # Input service name
-      - mongodb
+#      - mongodb
 
 
   frontend:
@@ -58,5 +58,5 @@ services:
 
 # We should input top level volume when to use named volume
 volumes:
-  mongo-data:
+#  mongo-data:
   logs:
